@@ -10,6 +10,7 @@
 import os
 import pandas as pd
 import maze
+from tabulate import tabulate
 
 if __name__ == "__main__":
     rows, cols = 30, 30
@@ -63,5 +64,8 @@ if __name__ == "__main__":
     df = pd.DataFrame(
         data, columns=["Algoritmus", "Délka cesty", "Prozkoumané uzly", "Čas (s)"]
     )
-    print(df)
+    print("\n=== Výsledky algoritmů ===\n")
+    print(tabulate(df, headers="keys", tablefmt="pretty", showindex=False))
+
     df.to_csv(os.path.join(output_dir, "vysledky.csv"), index=False)
+    print(f"\nVýsledky a obrázky byly uloženy do složky '{output_dir}'.")
