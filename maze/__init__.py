@@ -7,7 +7,7 @@
 * @desc [Funkce pro inicializaci modulu bludiště]
 """
 
-from .algoritms import bfs, dfs, astar
+from .algorithms import bfs, dfs, astar
 from .generator import gen_maze, is_free
 from .visualize import draw_solution
 
