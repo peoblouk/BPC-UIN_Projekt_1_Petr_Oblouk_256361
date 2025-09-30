@@ -16,9 +16,18 @@ if __name__ == "__main__":
     rows, cols = 30, 30
     start, goal = (0, 0), (29, 29)
 
-    # složka na výsledky
     output_dir = "outputs"
     os.makedirs(output_dir, exist_ok=True)
+
+    # ------------------------
+    # PARAMETRY OD UŽIVATELE
+    # ------------------------
+    try:
+        density = float(input("Zadej hustotu zdí (0–1) [0.3]: ") or 0.3)
+        seed = int(input("Zadej seed [0]: ") or 0)
+    except ValueError:
+        print("⚠️ Špatný vstup – použity výchozí hodnoty.")
+        density, seed = 0.3, 0
 
     # ------------------------
     # GENEROVÁNÍ S KONTROLOU
@@ -26,7 +35,9 @@ if __name__ == "__main__":
     valid = False
     seed = 0
     while not valid and seed < 50:
-        maze_map = maze.gen_maze(rows, cols, density=0.3, seed=seed)
+        maze_map = maze.gen_maze(
+            rows, cols, density=density, seed=seed
+        )  # maze_map = maze.gen_maze(rows, cols, density=0.3, seed=seed)
         maze_map[start] = 0
         maze_map[goal] = 0
         if maze.bfs(maze_map, start, goal, maze.is_free)["path"]:
@@ -69,3 +80,4 @@ if __name__ == "__main__":
 
     df.to_csv(os.path.join(output_dir, "vysledky.csv"), index=False)
     print(f"\nVýsledky a obrázky byly uloženy do složky '{output_dir}'.")
+    maze.show_results_window(maze_map, start, goal, results, df)
