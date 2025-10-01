@@ -1,5 +1,5 @@
 """
-* @file init.py
+* @file __init__.py
 * @author [Petr Oblouk]
 * @github [https://github.com/peoblouk]
 * @create date 30-09-2025 - 12:24:15
