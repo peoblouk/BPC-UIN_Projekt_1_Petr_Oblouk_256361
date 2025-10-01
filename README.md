@@ -1,6 +1,6 @@
 <!-- @format -->
 
-# 📘 Dokumentace projektu – Hledání cest v bludišti
+# Hledání cest v bludišti
 
 ## `algorithms.py`
 
