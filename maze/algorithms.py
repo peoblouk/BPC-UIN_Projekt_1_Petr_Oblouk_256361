@@ -3,8 +3,8 @@
 * @author [Petr Oblouk]
 * @github [https://github.com/peoblouk]
 * @create date 30-09-2025 - 12:24:11
-* @modify date 04-10-2025 - 12:42:32
-* @desc [Funkce pro algoritmy pro hledání cesty v bludišti]
+* @modify date 02-10-2025 - 12:42:32
+* @desc [Function for maze pathfinding algorithms]
 """
 
 import time, math, heapq

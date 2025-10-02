@@ -3,7 +3,7 @@
 * @author Petr Oblouk
 * @github https://github.com/peoblouk
 * @create date 30-09-2025 - 12:24:11
-* @modify date 05-10-2025 - 12:00:00
+* @modify date 02-10-2025 - 11:07:10
 * @desc [Hlavní soubor pro generování bludiště, spuštění algoritmů a zobrazení výsledků]
 """
 
@@ -20,24 +20,22 @@ if __name__ == "__main__":
     os.makedirs(output_dir, exist_ok=True)
 
     # ------------------------
-    # PARAMETRY OD UŽIVATELE
+    # PARAMETERS FROM USER
     # ------------------------
     try:
-        density = float(input("Zadej hustotu zdí (0–1) [0.3]: ") or 0.3)
-        seed = int(input("Zadej seed [0]: ") or 0)
+        density = float(input("Density of walls (0–1) [default 0.3]:") or 0.3)
+        seed = int(input("Choose seed [0]: ") or 0)
     except ValueError:
-        print("⚠️ Špatný vstup – použity výchozí hodnoty.")
+        print("⚠️ Invalid input – using default values.")
         density, seed = 0.3, 0
 
     # ------------------------
-    # GENEROVÁNÍ S KONTROLOU
+    # GENERATION OF MAZE WITH GUARANTEED PATH
     # ------------------------
     valid = False
     seed = 0
     while not valid and seed < 50:
-        maze_map = maze.gen_maze(
-            rows, cols, density=density, seed=seed
-        )  # maze_map = maze.gen_maze(rows, cols, density=0.3, seed=seed)
+        maze_map = maze.gen_maze(rows, cols, density=density, seed=seed)
         maze_map[start] = 0
         maze_map[goal] = 0
         if maze.bfs(maze_map, start, goal, maze.is_free)["path"]:
@@ -46,11 +44,11 @@ if __name__ == "__main__":
             seed += 1
 
     if not valid:
-        print("Nepodařilo se vygenerovat průchozí bludiště.")
+        print("⚠️ Could not generate a valid maze. Try different parameters.")
         exit()
 
     # ------------------------
-    # SPUŠTĚNÍ ALGORITMŮ
+    # SOLVING THE MAZE
     # ------------------------
     results = []
     for algo in [maze.dfs, maze.bfs, maze.astar]:
@@ -65,7 +63,7 @@ if __name__ == "__main__":
         )
 
     # ------------------------
-    # TABULKA VÝSLEDKŮ
+    # TABLE OF RESULTS
     # ------------------------
     data = []
     for r in results:
@@ -73,11 +71,11 @@ if __name__ == "__main__":
         data.append([r["name"], path_len, len(r["visited"]), round(r["runtime"], 6)])
 
     df = pd.DataFrame(
-        data, columns=["Algoritmus", "Délka cesty", "Prozkoumané uzly", "Čas (s)"]
+        data, columns=["Algorithm", "Path Length", "Explored Nodes", "Time (s)"]
     )
-    print("\n=== Výsledky algoritmů ===\n")
+    print("\n=== Algorithm Results ===\n")
     print(tabulate(df, headers="keys", tablefmt="pretty", showindex=False))
 
-    df.to_csv(os.path.join(output_dir, "vysledky.csv"), index=False)
-    print(f"\nVýsledky a obrázky byly uloženy do složky '{output_dir}'.")
+    df.to_csv(os.path.join(output_dir, "results.csv"), index=False)
+    print(f"\nResults and images have been saved to the '{output_dir}' folder.")
     maze.show_results_window(maze_map, start, goal, results, df)

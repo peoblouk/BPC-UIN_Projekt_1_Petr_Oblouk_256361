@@ -1,4 +1,0 @@
-Algoritmus,Délka cesty,Prozkoumané uzly,Čas (s)
-DFS,82,613,0.002059
-BFS,58,625,0.002762
-A_STAR,58,219,0.000644

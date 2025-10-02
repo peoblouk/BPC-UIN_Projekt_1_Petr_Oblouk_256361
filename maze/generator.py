@@ -3,8 +3,8 @@
 * @author [Petr Oblouk]
 * @github [https://github.com/peoblouk]
 * @create date 30-09-2025 - 12:24:11
-* @modify date 04-10-2025 - 08:29:31
-* @desc [Funkce pro generování bludiště]
+* @modify date 01-10-2025 - 08:29:31
+* @desc [Functions for generating mazes]
 """
 
 import numpy as np

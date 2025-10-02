@@ -2,6 +2,10 @@
 
 # Hledání cest v bludišti
 
+<p align="center">
+  <img src="gui.png" alt="Maze GUI Preview" width="700"/>
+</p>
+
 ## `algorithms.py`
 
 Obsahuje implementace tří algoritmů pro hledání cest v bludišti.
