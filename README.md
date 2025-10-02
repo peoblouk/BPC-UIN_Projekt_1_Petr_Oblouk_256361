@@ -98,7 +98,7 @@ from .algorithms import bfs, dfs, astar
 from .generator  import gen_maze, is_free
 from .visualize  import draw_solution
 
-__all__ = ["bfs", "dfs", "astar", "gen_maze", "is_free", "draw_solution"]
+__all__ = ["bfs", "dfs", "astar", "gen_maze", "is_free", "draw_solution", "show_results_window"]
 ```
 
 Díky tomu jde psát jednoduše:
@@ -120,24 +120,26 @@ Hlavní spouštěcí soubor projektu.
 ### Postup:
 
 1. Nastaví parametry (`rows`, `cols`, start a cíl).
-2. Vytvoří složku `outputs/` pro výsledky.
-3. Generuje náhodné bludiště s kontrolou průchodnosti (pomocí BFS).
-4. Spustí algoritmy `DFS`, `BFS`, `A*`.
-5. Uloží vizualizace do `outputs/`.
-6. Vypíše tabulku výsledků do konzole (pomocí `tabulate`) a uloží ji do `outputs/vysledky.csv`.
+2. Vyzve uživatele pro zadání parametrů (`seed` a `density`)
+3. Vytvoří složku `outputs/` pro výsledky.
+4. Generuje náhodné bludiště s kontrolou průchodnosti (pomocí BFS).
+5. Spustí algoritmy `DFS`, `BFS`, `A*`.
+6. Uloží vizualizace do `outputs/`.
+7. Vypíše tabulku výsledků do konzole (pomocí `tabulate`) a uloží ji do `outputs/results.csv`.
 
 ### Ukázka výsledku v konzoli:
 
 ```
 === Výsledky algoritmů ===
 
-+------------+--------------+------------------+---------+
-| Algoritmus | Délka cesty  | Prozkoumané uzly | Čas (s) |
-+------------+--------------+------------------+---------+
-| DFS        |     58       |        312       | 0.0003  |
-| BFS        |     42       |        198       | 0.0004  |
-| A*         |     42       |        156       | 0.0002  |
-+------------+--------------+------------------+---------+
+```text
++------------+--------------+-----------------+---------+
+| Algorithm  | Path length  | Explored nodes  | Time(s) |
++------------+--------------+-----------------+---------+
+| DFS        |     58       |       312       | 0.0003  |
+| BFS        |     42       |       198       | 0.0004  |
+| A* Search  |     42       |       156       | 0.0002  |
++------------+--------------+-----------------+---------+
 
 Tabulka byla uložena do: outputs/vysledky.csv
 ```
