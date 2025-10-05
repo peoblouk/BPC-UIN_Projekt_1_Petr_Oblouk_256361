@@ -1,147 +1,124 @@
-<!-- @format -->
+# Projekt: Řešení bludiště (DFS, BFS, A*)
 
-# Hledání cest v bludišti
+Tento projekt demonstruje a porovnává chování algoritmů **DFS**, **BFS** a **A\*** na procedurálně generovaných bludištích.  
+Bludiště mohou být generována náhodně pomocí PRNG generátoru nebo strukturovaně pomocí **Primova algoritmu**.  
+Součástí projektu je vizualizace, volba heuristiky, benchmark a export výsledků.
+
+---
 
 <p align="center">
-  <img src="gui.png" alt="Maze GUI Preview" width="700"/>
+  <img src="gui.png" alt="Ukázka GUI projektu" width="800"/>
 </p>
 
-## `algorithms.py`
+---
 
-Obsahuje implementace tří algoritmů pro hledání cest v bludišti.
+## 🔧 Funkce projektu
 
-- **`MOVES`** – definice možných kroků (nahoru, dolů, vlevo, vpravo).
-- **`reconstruct_path`** – funkce, která z rodičů (`parent`) poskládá výslednou cestu od cíle ke startu.
-
-### Funkce:
-
-- **`bfs(maze, start, goal, is_free)`**
-
-  - Implementace **Breadth-First Search** (prohledávání do šířky).
-  - Používá frontu (`deque`).
-  - Najde vždy nejkratší cestu.
-  - Prozkoumává hodně uzlů, proto může být pomalejší.
-
-- **`dfs(maze, start, goal, is_free)`**
-
-  - Implementace **Depth-First Search** (prohledávání do hloubky).
-  - Používá zásobník (`list` jako stack).
-  - Najde nějakou cestu, ale nemusí být optimální.
-  - Může být rychlejší u malých bludišť.
-
-- **`astar(maze, start, goal, is_free)`**
-  - Implementace **A\*** algoritmu.
-  - Používá prioritní frontu (`heapq`).
-  - Využívá heuristiku – **Manhattanovu vzdálenost**.
-  - Najde optimální cestu efektivněji než BFS, protože prozkoumá méně uzlů.
-
-Každá funkce vrací slovník se strukturou:
-
-```python
-{
-  "name": "BFS / DFS / A_STAR",
-  "path": [...],       # nalezená cesta
-  "visited": {...},    # množina navštívených uzlů
-  "runtime": 0.00123   # doba běhu v sekundách
-}
-```
+- **Generování bludišť:**
+  - Náhodný generátor (PRNG) s nastavitelnou hustotou (`density`) a seedem (`seed`)
+  - Strukturovaný generátor založený na **Primově algoritmu**
+- **Implementované algoritmy:**
+  - *DFS (Depth-First Search)* – prohledávání do hloubky  
+  - *BFS (Breadth-First Search)* – prohledávání do šířky  
+  - *A* Search* – heuristické vyhledávání s podporou více heuristik:
+    - Manhattanova vzdálenost  
+    - Euklidovská vzdálenost  
+    - Diagonální vzdálenost  
+- **Vizualizace:**
+  - Styl „hacker terminálu“ – černé pozadí, zelené zdi, bílé cesty  
+  - Společná legenda pro všechny grafy  
+  - Výsledky všech algoritmů vykreslené vedle sebe v jednom okně  
+- **Benchmark mód** – měří výkon algoritmů na deseti náhodně vygenerovaných bludištích  
+- **Export výsledků:**
+  - Výpis tabulky v konzoli  
+  - Obrázky (`.png`) ve složce `outputs/`  
+  - Výsledky (`results.csv`, `benchmark.csv`) uložené do `outputs/`
 
 ---
 
-## `generator.py`
+## ▶️ Použití
 
-Starà se o generování a validaci bludiště.
-
-### Funkce:
-
-- **`gen_maze(rows, cols, density=0.3, seed=42)`**
-
-  - Vygeneruje náhodné bludiště s daným počtem řádků a sloupců.
-  - `density` určuje hustotu zdí (0 = žádné, 1 = plné).
-  - `seed` umožní opakovatelné generování.
-
-- **`in_bounds(maze, r, c)`**
-
-  - Kontrola, zda souřadnice leží uvnitř bludiště.
-
-- **`is_free(maze, r, c)`**
-  - Vrací `True`, pokud je na souřadnici volné pole (`0`).
-
----
-
-## `visualize.py`
-
-Slouží k vizualizaci výsledků algoritmů.
-
-### Funkce:
-
-- **`draw_solution(maze, start, goal, result, filename)`**
-  - Vykreslí bludiště:
-    - zdi = černé (`1`),
-    - volné pole = bílé (`0`),
-    - navštívené uzly = modré,
-    - výsledná cesta = zelená čára,
-    - start = červený čtverec,
-    - cíl = modrý křížek.
-  - Uloží obrázek do souboru (`filename`).
-
----
-
-## `__init__.py`
-
-Zajišťuje, aby šel balíček `maze` jednoduše používat.
-
-### Obsah:
-
-```python
-from .algorithms import bfs, dfs, astar
-from .generator  import gen_maze, is_free
-from .visualize  import draw_solution
-
-__all__ = ["bfs", "dfs", "astar", "gen_maze", "is_free", "draw_solution", "show_results_window"]
-```
-
-Díky tomu jde psát jednoduše:
-
-```python
-import maze
-
-maze.bfs(...)
-maze.gen_maze(...)
-maze.draw_solution(...)
-```
-
----
-
-## `main.py`
-
-Hlavní spouštěcí soubor projektu.
-
-### Postup:
-
-1. Nastaví parametry (`rows`, `cols`, start a cíl).
-2. Vyzve uživatele pro zadání parametrů (`seed` a `density`)
-3. Vytvoří složku `outputs/` pro výsledky.
-4. Generuje náhodné bludiště s kontrolou průchodnosti (pomocí BFS).
-5. Spustí algoritmy `DFS`, `BFS`, `A*`.
-6. Uloží vizualizace do `outputs/`.
-7. Vypíše tabulku výsledků do konzole (pomocí `tabulate`) a uloží ji do `outputs/results.csv`.
-
-### Ukázka výsledku v konzoli:
+Program spusť z příkazové řádky:
 
 ```
-=== Výsledky algoritmů ===
-
-```text
-+------------+--------------+-----------------+---------+
-| Algorithm  | Path length  | Explored nodes  | Time(s) |
-+------------+--------------+-----------------+---------+
-| DFS        |     58       |       312       | 0.0003  |
-| BFS        |     42       |       198       | 0.0004  |
-| A* Search  |     42       |       156       | 0.0002  |
-+------------+--------------+-----------------+---------+
-
-Tabulka byla uložena do: outputs/vysledky.csv
+python main.py
+Po spuštění program vyzve k zadání parametrů:
 ```
 
----
+Choose generator [random / prim] [default: random]: prim
+Choose A* heuristic [manhattan / euclidean / diagonal] [default: manhattan]: euclidean
+Density of walls (0–1) [default 0.3]: 0.25
+Choose seed [default: 0]: 42
+
+## 🧭 Ukázka výstupu v konzoli
+✅ Maze successfully generated using: PRIM generator (seed=42)
+
+=== Algorithm Results ===
+```
++-----------------+--------------+-----------------+---------+
+|   Algorithm     | Path Length  | Explored Nodes  | Time(s) |
++-----------------+--------------+-----------------+---------+
+| DFS             |     106      |       518       | 0.0007  |
+| BFS             |      60      |       613       | 0.0007  |
+| A* (euclidean)  |      60      |       297       | 0.0005  |
++-----------------+--------------+-----------------+---------+
+```
+
+Results and images have been saved to the 'outputs' folder.
+## 🧠 Benchmark algoritmů
+Pro spuštění benchmarku zvlášť (např. v interaktivním prostředí):
+```
+from main import benchmark_algorithms
+benchmark_algorithms("manhattan")
+```
+
+Výsledky se uloží do outputs/benchmark.csv a v konzoli se zobrazí průměrné hodnoty:
+```
+=== Benchmarking algorithms on 10 random mazes (heuristic = manhattan) ===
+
++-----------------+--------------+-----------------+---------+
+|   Algorithm     | Path length  | Explored nodes  | Time(s) |
++-----------------+--------------+-----------------+---------+
+| DFS             |     402      |      1320       | 0.0039  |
+| BFS             |     105      |      1815       | 0.0125  |
+| A* (manhattan)  |     105      |       940       | 0.0084  |
++-----------------+--------------+-----------------+---------+
+```
+
+## 📦 Knihovny
+```
+numpy, matplotlib, pandas, tabulate
+```
+```
+pip install -r requirements.txt
+```
+
+## 🗂 Struktura projektu
+```
+├── maze/
+│   ├── __init__.py
+│   ├── algorithms.py
+│   ├── generator.py
+│   ├── visualize.py
+├── outputs/
+│   ├── DFS.png
+│   ├── BFS.png
+│   ├── Astar_euclidean.png
+│   ├── results.csv
+│   ├── benchmark.csv
+├── main.py
+├── requirements.txt
+├── README.md
+└── gui.png
+```
+##📚 Teoretické pozadí
+DFS (Depth-First Search)
+→ Prohledává do hloubky, rychlý a nenáročný na paměť, ale nemusí najít nejkratší cestu.
+
+BFS (Breadth-First Search)
+→ Prohledává do šířky, vždy najde nejkratší cestu, ale je paměťově náročnější.
+
+A*
+→ Kombinuje výhody BFS a heuristického odhadu vzdálenosti.
+Při vhodně zvolené heuristice (např. Manhattan) je A* optimální a zároveň efektivní.
+Jeho výkon a rychlost závisí na použité heuristice.
