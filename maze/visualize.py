@@ -3,12 +3,9 @@
 * @author [Petr Oblouk]
 * @github [https://github.com/peoblouk]
 * @create date 30-09-2025 - 12:24:11
-* @modify date 02-10-2025 - 15:19:32
+* @modify date 05-10-2025 - 15:19:32
 * @desc [Function for visualizing mazes and their solutions]
 """
-
-import matplotlib.pyplot as plt
-from tabulate import tabulate
 
 import matplotlib.pyplot as plt
 from tabulate import tabulate

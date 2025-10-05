@@ -3,7 +3,7 @@
 * @author [Petr Oblouk]
 * @github [https://github.com/peoblouk]
 * @create date 30-09-2025 - 12:24:11
-* @modify date 02-10-2025 - 12:42:32
+* @modify date 04-10-2025 - 12:42:32
 * @desc [Function for maze pathfinding algorithms]
 """
 
@@ -77,9 +77,22 @@ def dfs(maze, start, goal, is_free):
     }
 
 
-def astar(maze, start, goal, is_free):
+def astar(maze, start, goal, is_free, heuristic):
     def manhattan(a, b):
         return abs(a[0] - b[0]) + abs(a[1] - b[1])
+
+    def euclidean(a, b):
+        return ((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2) ** 0.5
+
+    def diagonal(a, b):
+        return max(abs(a[0] - b[0]), abs(a[1] - b[1]))
+
+    if heuristic == "euclidean":
+        h = euclidean
+    elif heuristic == "diagonal":
+        h = diagonal
+    else:
+        h = manhattan
 
     t0 = time.time()
     open_set = [(0, start)]
@@ -105,12 +118,12 @@ def astar(maze, start, goal, is_free):
             if tentative_g < g_score.get(nb, math.inf):
                 parent[nb] = current
                 g_score[nb] = tentative_g
-                f = tentative_g + manhattan(nb, goal)
+                f = tentative_g + h(nb, goal)
                 heapq.heappush(open_set, (f, nb))
 
     path = reconstruct_path(parent, start, goal)
     return {
-        "name": "A_STAR",
+        "name": f"A_STAR ({heuristic})",
         "path": path,
         "visited": visited,
         "runtime": time.time() - t0,
