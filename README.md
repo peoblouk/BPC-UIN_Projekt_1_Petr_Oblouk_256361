@@ -77,12 +77,12 @@ Slouží k vizualizaci výsledků algoritmů.
 
 - **`draw_solution(maze, start, goal, result, filename)`**
   - Vykreslí bludiště:
-    - zdi = černé (`1`),
-    - volné pole = bílé (`0`),
-    - navštívené uzly = modré,
+    - zdi = zelené (`1`),
+    - volné pole = černé (`0`),
+    - navštívené uzly = bílé,
     - výsledná cesta = zelená čára,
-    - start = červený čtverec,
-    - cíl = modrý křížek.
+    - start = bílý čtverec,
+    - cíl = bálý křížek.
   - Uloží obrázek do souboru (`filename`).
 
 ---
